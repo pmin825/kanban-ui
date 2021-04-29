@@ -104,4 +104,4 @@ const editTask = async (e) => {
 ```
 
 ## Future Direction
-* Implement the drag and drop feature between columns
+* Implement drag and drop feature of tasks between columns.
