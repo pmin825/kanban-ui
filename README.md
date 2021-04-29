@@ -1,59 +1,107 @@
+# kanban-ui
 
-### Run the server locally
+kanban-ui is a web application that allows users to create tasks, 
+
+## Backend Setup - Run the server locally
 1) clone the repo
 2) cd into kanban-api
 3) run npm install
-4) start up mongodb
-5) create a .env with CONNECTION_STRING="mongodb://localhost:27017" (obviously modify to the port you're using, make sure its in the right folder)
+4) start up mongodb, you can do so by running <mongod --dbpath ~/data/db?
+5) once mongod is running, run mongo 
 6) use yarn start to start the program
 7) if for whatever reason yarn start is not working, try yarn startdev
-8) The server will by default run on localhost 9000
 
-To make the frontend interact with the backend, I'd highly reccomend using CORS
+## Frontend Setup
+1) from root of project, cd into frontend
+2) run yarn install 
+3) run yarn start
 
-### ROUTES
+## Technologies 
+* React
+* Javascript 
+* Node.js
+* Express.js
+* MongoDB
+* Axios
 
-The routes can all be found in the routes/index.js file in the repository, but this is a brief summary
+## Implementation 
 
-#### TASKS:
+All users and tasks are stored in local database with MongoDB, and our frontend interacts with the backend by making HTTP requests via Axios. 
 
-path: /tasks
+Code Snippet: Once data is fetched, we then filter through each task by their status type, and push them into the correct buckets. Once we have our buckets, we use React Hooks to set the state. 
+```js
+const fetchUsers = async () => {
+    try {
+      const response = await axios.get('http://localhost:9000/v1/users');
+      setUsers(response.data.users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-For the different tasks, there are 4 separate routes:
-1) put (updates the task); arguments: type, assignee, title, description
-2) delete (deletes the task); arguments: title
-3) post (creates the task); arguments: type, assignee, title, description
-4) get (retrieves the task); arguments: none
+  const fetchTasks = async () => {
+    let todo = [];
+    let inProgress = [];
+    let complete = [];
+    let inReview = [];
+    try {
+      const response = await axios.get('http://localhost:9000/v1/tasks');
+      setTasks(response.data.tasks);
+      const allTasks = response.data.tasks;
+      for (const task of allTasks) {
+        if (task.type === 'TO DO') todo.push(task);
+        if (task.type === 'IN PROGRESS') inProgress.push(task);
+        if (task.type === 'COMPLETE') complete.push(task);
+        if (task.type === 'IN REVIEW') inReview.push(task);
+      }
+      setTodoList(todo);
+      setInProgressList(inProgress);
+      setInReviewList(inReview);
+      setCompleteList(complete);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+```
+## Features 
+* Ability to create new users
+* Ability to add, remove, delete, edit, and assign tasks
+* Add a title and description to the task
+* Change task status type to either "TO DO, IN PROGRESS, IN REVIEW, or COMPLETE"
+* Buckets of different tasks based on status type
 
-#### USERS:
+Code Snippet: We edit a selected task by modifying it's current state to whatever the user inputs. We then send that edited task to store in our database via an axios. We then push the user back to the main page to see the all tasks. 
+```js
+const editTask = async (e) => {
+    e.preventDefault();
+    const task = {
+      type: currentTask.type,
+      assignee: currentTask.assignee,
+      title: currentTask.title,
+      description: currentTask.description,
+    };
 
-path : /users
-
-For the different users, there are 2 separate routes:
-1) get (retrieves the user); arguments: none
-2) post (creates the user); arguments: firstName, lastName
-
-#### User model: 
-```javascript
-const userSchema = new Schema({
-  firstName: { type: String, required: true},
-  lastName: { type: String, required: true},
-})
+    try {
+      const response = await axios.put('http://localhost:9000/v1/tasks', task);
+      history.push('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  const handleEditInput = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    debugger;
+    setCurrentTask((prevState) => {
+      return {
+        ...prevState,
+        [name]: value,
+      };
+    });
+  };
 ```
 
-#### Task model: 
-
-```javascript
-const taskSchema = new Schema({
-  type: { 
-    type: String, 
-    enum : ['TO DO', 'IN PROGRESS', 'COMPLETE', 'IN REVIEW'], 
-    default: 'TO DO', 
-    },
-    assignee: { type: String, required: false},
-    title: {type: String, required: true},
-    description: {type: String, required: false},
-    dateDue: {type: Date, required: true},
-})
-```
-   
+## Future Direction
+* Implement the drag and drop feature between columns
