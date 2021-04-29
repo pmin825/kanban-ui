@@ -1,6 +1,6 @@
 # kanban-ui
 
-kanban-ui is a web application that allows users to create tasks, 
+kanban-ui is a web application that allows users to manage tasks in a simple, intuitive way.  
 
 ## Backend Setup - Run the server locally
 1) clone the repo
