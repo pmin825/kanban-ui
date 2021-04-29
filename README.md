@@ -26,7 +26,7 @@ kanban-ui is a web application that allows users to manage tasks in a simple, in
 
 ## Implementation 
 
-All users and tasks are stored in local database with MongoDB, and our frontend interacts with the backend by making HTTP requests via Axios. 
+All users and tasks are stored in a local database with MongoDB, and our frontend interacts with the backend by making HTTP requests via axios. 
 
 Code Snippet: Once data is fetched, we then filter through each task by their status type, and push them into the correct buckets. Once we have our buckets, we use React Hooks to set the state. 
 ```js
