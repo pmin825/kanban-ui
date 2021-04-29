@@ -26,4 +26,9 @@ app.use(logErrors);
 app.use(clientError);
 app.use(serverError);
 
+const port = 27017;
+app.listen(port, () => {
+  console.log(`Server is listening on https://localhost:${port}`);
+});
+
 export default app;

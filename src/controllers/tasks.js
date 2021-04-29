@@ -1,6 +1,7 @@
 import { Tasks } from '../models/models';
 
 export const tasksPage = async (req, res, next) => {
+  debugger;
   try {
     const tasks = await Tasks.find();
     res.status(200).json({ tasks });
@@ -15,12 +16,13 @@ function addDays(date, days) {
   return result;
 }
 
-export const updateTask = async (req, res, next) =>{ 
-  const { type, assignee, title, description} = req.body;
+export const updateTask = async (req, res, next) => {
+  const { type, assignee, title, description } = req.body;
   const Title = title;
+  console.log(req.body)
   try {
-    let currentTask =  await Tasks.findOne({
-      title: Title
+    let currentTask = await Tasks.findOne({
+      title: Title,
     });
     currentTask.type = type;
     currentTask.assignee = assignee;
@@ -28,21 +30,24 @@ export const updateTask = async (req, res, next) =>{
     currentTask.description = description;
     await currentTask.save();
     const m = currentTask;
-    res.status(202).json({success: true, message:m});
-  } catch(err) {
+    res.status(202).json({ success: true, message: m });
+  } catch (err) {
     console.log(err);
     next(err);
   }
-
-
 };
 
 export const addTask = async (req, res, next) => {
-
-  const dateDue=  addDays(new Date(), 3);
-  const { type, assignee, title, description} = req.body;
+  const dateDue = addDays(new Date(), 3);
+  const { type, assignee, title, description } = req.body;
   try {
-    const m = await Tasks({ type, assignee, title, description, dateDue}).save();
+    const m = await Tasks({
+      type,
+      assignee,
+      title,
+      description,
+      dateDue,
+    }).save();
     res.status(201).json({ success: true, message: m });
   } catch (err) {
     console.log(err);
@@ -51,14 +56,14 @@ export const addTask = async (req, res, next) => {
 };
 
 export const deleteTask = async (req, res, next) => {
-  const {title} = req.body;
-  const currentTitle = title
+  const { title } = req.body;
+  const currentTitle = title;
   console.log(currentTitle);
   try {
-    let currentTask = await Tasks.deleteOne({title:currentTitle});
-    res.status(203).json({success: true});
+    let currentTask = await Tasks.deleteOne({ title: currentTitle });
+    res.status(203).json({ success: true });
   } catch (err) {
     console.log(err);
     next(err);
   }
-}
+};

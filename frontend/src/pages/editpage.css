@@ -1,0 +1,38 @@
+nav {
+  height: 60px;
+  width: 100%;
+  border: 1px solid black;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+nav h1 {
+  color: whitesmoke;
+  text-shadow: 4px 4px 4px black;
+}
+
+nav span {
+  color: whitesmoke;
+  text-shadow: 2px 2px 2px black;
+}
+
+.home-button {
+  margin-left: 20px;
+}
+
+.app-title {
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.edit-form-container form {
+  display: flex;
+  justify-content: center;
+}
+
+form label {
+  margin: 10px;
+}

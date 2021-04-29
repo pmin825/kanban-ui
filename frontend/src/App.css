@@ -1,0 +1,24 @@
+
+input {
+  border-radius: 7px;
+  outline: none;
+  padding: 3px;
+}
+
+select {
+  border-radius: 7px;
+  outline: none;
+  padding: 3px;
+}
+
+button {
+  border-radius: 7px;
+  cursor: pointer;
+  background-color: #ffa07a;
+  box-shadow: 2px 2px 2px rgb(37, 36, 36);
+}
+
+body {
+  font-family: Lato, sans-serif;
+  background-color: whitesmoke;
+}
